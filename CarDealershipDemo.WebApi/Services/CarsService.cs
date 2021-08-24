@@ -49,13 +49,13 @@ namespace CarDealershipDemo.WebApi.Services
             bool? hasNavigation,
             bool? hasHeatedSeats,
             int? mileageThreshold,
-            bool meetAllCriteria,
+            bool strictSearch,
             CancellationToken cancellationToken = default)
         {
             var cars = await GetAllCarsAsync(cancellationToken);
             mileageThreshold ??= DefaultMileageThreshold;
 
-            if (meetAllCriteria)
+            if (strictSearch)
             {
                 cars = cars.Where(car
                     => (string.IsNullOrEmpty(color) || car.Color == color)
@@ -69,13 +69,13 @@ namespace CarDealershipDemo.WebApi.Services
             else
             {
                 cars = cars.Where(car
-                    => (string.IsNullOrEmpty(color) || car.Color == color)
-                    || (!hasSunroof.HasValue || car.HasSunroof == hasSunroof)
-                    || (!isFourWheelDrive.HasValue || car.IsFourWheelDrive == isFourWheelDrive)
-                    || (!hasLowMiles.HasValue || car.Miles <= mileageThreshold)
-                    || (!hasPowerWindows.HasValue || car.HasPowerWindows == hasPowerWindows)
-                    || (!hasNavigation.HasValue || car.HasNavigation == hasNavigation)
-                    || (!hasHeatedSeats.HasValue || car.HasHeatedSeats == hasHeatedSeats));
+                    => (!string.IsNullOrEmpty(color) && car.Color == color)
+                    || (hasSunroof.HasValue && car.HasSunroof == hasSunroof)
+                    || (isFourWheelDrive.HasValue && car.IsFourWheelDrive == isFourWheelDrive)
+                    || (hasLowMiles.HasValue && car.Miles <= mileageThreshold)
+                    || (hasPowerWindows.HasValue && car.HasPowerWindows == hasPowerWindows)
+                    || (hasNavigation.HasValue && car.HasNavigation == hasNavigation)
+                    || (hasHeatedSeats.HasValue && car.HasHeatedSeats == hasHeatedSeats));
             }
 
             return cars;

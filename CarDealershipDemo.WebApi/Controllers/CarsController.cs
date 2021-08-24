@@ -25,7 +25,14 @@ namespace CarDealershipDemo.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCarsAsync(
+        public async Task<IActionResult> GetAllCarsAsync(CancellationToken cancellationToken)
+        {
+            var cars = await _carsService.GetAllCarsAsync(cancellationToken);
+            return Ok(cars);
+        }
+
+        [HttpGet("filter")]
+        public async Task<IActionResult> GetFilteredCarsAsync(
             string color,
             bool? hasSunroof,
             bool? isFourWheelDrive,
@@ -34,7 +41,7 @@ namespace CarDealershipDemo.WebApi.Controllers
             bool? hasNavigation,
             bool? hasHeatedSeats,
             int? mileageThreshold,
-            bool meetAllCriteria,
+            bool strictSearch,
             CancellationToken cancellationToken)
         {
             var cars = await _carsService.GetFilteredCarsAsync(
@@ -46,7 +53,7 @@ namespace CarDealershipDemo.WebApi.Controllers
                 hasNavigation,
                 hasHeatedSeats,
                 mileageThreshold,
-                meetAllCriteria,
+                strictSearch,
                 cancellationToken);
             foreach (var car in cars)
             {
