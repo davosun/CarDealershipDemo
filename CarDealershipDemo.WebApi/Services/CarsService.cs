@@ -33,6 +33,11 @@ namespace CarDealershipDemo.WebApi.Services
         {
             await using var stream = new FileStream("Cars.json", FileMode.Open);
             var cars = await JsonSerializer.DeserializeAsync<IEnumerable<Car>>(stream, _jsonOptions, cancellationToken);
+            foreach (var car in cars)
+            {
+                car.AssignColorCode();
+            }
+
             cars = cars.OrderByDescending(car => car.Year)
                 .ThenBy(car => car.Miles)
                 .ThenBy(car => car.Price)
@@ -52,8 +57,20 @@ namespace CarDealershipDemo.WebApi.Services
             bool strictSearch,
             CancellationToken cancellationToken = default)
         {
+            // When working with a database, filtering would be performed at the query level to avoid an excessive payload.
             var cars = await GetAllCarsAsync(cancellationToken);
             mileageThreshold ??= DefaultMileageThreshold;
+
+            if (string.IsNullOrEmpty(color)
+                && !hasSunroof.HasValue
+                && !hasLowMiles.HasValue
+                && !hasPowerWindows.HasValue
+                && !hasNavigation.HasValue
+                && !hasHeatedSeats.HasValue
+                && !isFourWheelDrive.HasValue)
+            {
+                return cars;
+            }
 
             if (strictSearch)
             {

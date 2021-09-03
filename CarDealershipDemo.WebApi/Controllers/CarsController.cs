@@ -55,11 +55,6 @@ namespace CarDealershipDemo.WebApi.Controllers
                 mileageThreshold,
                 strictSearch,
                 cancellationToken);
-            foreach (var car in cars)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                car.AssignColorCode();
-            }
             return Ok(cars);
         }
 
@@ -74,10 +69,9 @@ namespace CarDealershipDemo.WebApi.Controllers
             var car = await _carsService.GetCarAsync(id, cancellationToken);
             if (car == null)
             {
-                return NotFound($"Car not found for {nameof(id).ToUpperInvariant()} {id}.");
+                return NotFound($"Car not found for {nameof(id)} {id}.");
             }
 
-            car.AssignColorCode();
             return Ok(car);
         }
     }
