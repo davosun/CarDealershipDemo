@@ -14,7 +14,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace CarDealershipDemo.WebApi
+namespace CarDealershipDemo
 {
     public class Startup
     {
@@ -38,7 +38,7 @@ namespace CarDealershipDemo.WebApi
 
             services.AddSpaStaticFiles(config =>
             {
-                config.RootPath = "CarDealershipDemo.Client/app/build";
+                config.RootPath = "app/build";
             });
         }
 
@@ -63,6 +63,11 @@ namespace CarDealershipDemo.WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "app";
             });
         }
     }
