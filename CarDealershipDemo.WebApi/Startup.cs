@@ -36,10 +36,7 @@ namespace CarDealershipDemo.WebApi
 
             services.AddScoped<ICarsService, CarsService>();
 
-            services.AddSpaStaticFiles(config =>
-            {
-                config.RootPath = "CarDealershipDemo.Client/app/build";
-            });
+            services.AddSpaStaticFiles();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
