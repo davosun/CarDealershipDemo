@@ -36,9 +36,8 @@ namespace CarDealershipDemo.WebApi
 
             services.AddScoped<ICarsService, CarsService>();
 
-            services.AddSpaStaticFiles(config =>
-            {
-                config.RootPath = "CarDealershipDemo.Client/app/build";
+            services.AddSpaStaticFiles(config => {
+                config.RootPath = "app";
             });
         }
 
