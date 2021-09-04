@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31613.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarDealershipDemo", "CarDealershipDemo\CarDealershipDemo.csproj", "{3F034CE9-2AFB-46A5-8829-F3CFE4AF2D57}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarDealershipDemo.WebApi", "CarDealershipDemo.WebApi\CarDealershipDemo.WebApi.csproj", "{3F034CE9-2AFB-46A5-8829-F3CFE4AF2D57}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarDealershipDemo.Tests", "CarDealershipDemo.Tests\CarDealershipDemo.Tests.csproj", "{FC4BE1FF-3BDE-4467-8326-7187F7C22489}"
 EndProject
