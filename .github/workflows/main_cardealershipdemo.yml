@@ -33,22 +33,6 @@ jobs:
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
-          
-      - name: Set up Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: '14.x'
-          
-      - name: npm install and build
-        run: |
-          npm install CarDealershipDemo.Client/app
-          npm run CarDealershipDemo.Client/app
-          
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: node-app
-          path: .
 
   deploy:
     runs-on: windows-latest
@@ -62,11 +46,6 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: .net-app
-          
-      - name: Download artifact
-        uses: actions/downlod-artifact@v2
-        with:
-          name: node-app
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
