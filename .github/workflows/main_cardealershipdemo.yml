@@ -41,7 +41,6 @@ jobs:
           
       - name: npm install and build
         run: |
-          cd CarDealershipDemo.Client/app
           npm install # CarDealershipDemo.Client/app
           npm run build # CarDealershipDemo.Client/app
           
