@@ -187,7 +187,7 @@ function App() {
               <td>{car.make}</td>
               <td>{car.year}</td>
               <td>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" className="mb-1">
                     <rect width="100%" height="100%" fill={car.colorCodeHex} />
                   </svg>{' '}
                 {car.color}
