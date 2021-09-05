@@ -37,7 +37,7 @@ namespace CarDealershipDemo.WebApi
             services.AddScoped<ICarsService, CarsService>();
 
             services.AddSpaStaticFiles(config => {
-                config.RootPath = "app";
+                config.RootPath = "/";
             });
         }
 
@@ -62,6 +62,11 @@ namespace CarDealershipDemo.WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSpa(spa => 
+            {
+                spa.Options.SourcePath = "/";
             });
         }
     }
