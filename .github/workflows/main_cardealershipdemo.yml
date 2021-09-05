@@ -42,7 +42,7 @@ jobs:
       - name: npm install and build
         run: |
           npm install CarDealershipDemo.Client/app
-          npm run build CarDealershipDemo.Client/app
+          npm run CarDealershipDemo.Client/app
           
       - name: Upload artifact
         uses: actions/upload-artifact@v2
