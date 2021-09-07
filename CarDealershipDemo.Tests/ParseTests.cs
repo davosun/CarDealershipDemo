@@ -1,11 +1,13 @@
 using CarDealershipDemo.WebApi;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.IO;
+using System.Text.Json;
 
 namespace CarDealershipDemo.Tests
 {
     [TestClass]
-    public class ParseTest
+    public class ParseTests
     {
         [TestMethod]
         public void ParseGuid()
