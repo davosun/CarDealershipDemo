@@ -6,7 +6,7 @@ This is a project demonstrating the implmentation of a single-page application w
 The frontend is built using React and Bootstrap, and the backend is a .NET (Core) web API.  
 Dependency injection and unit testing are also demonstrated in the code base. For simplicity purposes, a backend data repository is omitted.  
 
-This project is influenced by the selections from [iTrellis](https://itrellisrecruiting.azurewebsites.net/).  
+This project is influenced by the options from [iTrellis](https://itrellisrecruiting.azurewebsites.net/).  
 The following variables were chosen:
 - Domain: **Car Dealership**
 - Interface: **Web API**
