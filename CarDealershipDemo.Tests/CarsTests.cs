@@ -1,7 +1,8 @@
 ﻿using CarDealershipDemo.WebApi.Services;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ namespace CarDealershipDemo.Tests
     {
         private IConfiguration _mockConfig;
         private ICarsService _mockCarsService;
+        private ILogger<CarsService> _mockLogger;
 
         [TestInitialize]
         public void Setup()
@@ -20,13 +22,15 @@ namespace CarDealershipDemo.Tests
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            _mockCarsService = new CarsService(_mockConfig);
+            _mockLogger = new FakeLogger<CarsService>();
+
+            _mockCarsService = new CarsService(_mockConfig, _mockLogger);
         }
 
         [TestMethod]
         public async Task ListOfCars()
         {
-            var cars = await _mockCarsService.GetAllCarsAsync();
+            var cars = await _mockCarsService.GetAllCarsAsync(1, 5);
             var carsExist = cars.Any();
             Assert.IsTrue(carsExist);
         }
@@ -34,7 +38,7 @@ namespace CarDealershipDemo.Tests
         [TestMethod]
         public async Task FilterByLowMileage()
         {
-            var cars = await _mockCarsService.GetFilteredCarsAsync(null, null, null, true, null, null, null, null, false);
+            var cars = await _mockCarsService.GetFilteredCarsAsync(null, null, null, true, null, null, null, null, false,0,0);
             var allAreLowMileage = cars.All(car => car.Miles <= _mockCarsService.DefaultMileageThreshold);
             Assert.IsTrue(allAreLowMileage);
         }
@@ -42,7 +46,7 @@ namespace CarDealershipDemo.Tests
         [TestMethod]
         public async Task FilterWithoutStrictMatching()
         {
-            var cars = await _mockCarsService.GetFilteredCarsAsync(null, true, true, null, true, null, null, null, false);
+            var cars = await _mockCarsService.GetFilteredCarsAsync(null, true, true, null, true, null, null, null, false, 0, 0);
             var someCriteriaMet = cars.All(car => car.HasSunroof || car.IsFourWheelDrive || car.HasPowerWindows);
             Assert.IsTrue(someCriteriaMet);
         }
@@ -50,7 +54,7 @@ namespace CarDealershipDemo.Tests
         [TestMethod]
         public async Task FilterWithStrictMatching()
         {
-            var cars = await _mockCarsService.GetFilteredCarsAsync(null, true, true, null, true, null, null, null, true);
+            var cars = await _mockCarsService.GetFilteredCarsAsync(null, true, true, null, true, null, null, null, true, 0, 0);
             var allCriteriaMet = cars.All(car => car.HasSunroof && car.IsFourWheelDrive && car.HasPowerWindows);
             Assert.IsTrue(allCriteriaMet);
         }

@@ -1,11 +1,6 @@
 ﻿using CarDealershipDemo.WebApi.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,10 +19,10 @@ namespace CarDealershipDemo.WebApi.Controllers
             _carsService = carsService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllCarsAsync(CancellationToken cancellationToken)
+        [HttpGet("")]
+        public async Task<IActionResult> GetAllCarsAsync(int page = 1, int pageSize = 50, CancellationToken cancellationToken = default)
         {
-            var cars = await _carsService.GetAllCarsAsync(cancellationToken);
+            var cars = await _carsService.GetAllCarsAsync(page, pageSize, cancellationToken);
             return Ok(cars);
         }
 
@@ -42,7 +37,9 @@ namespace CarDealershipDemo.WebApi.Controllers
             bool? hasHeatedSeats,
             int? mileageThreshold,
             bool strictSearch,
-            CancellationToken cancellationToken)
+            int page = 1,
+            int pageSize = 50,
+            CancellationToken cancellationToken = default)
         {
             var cars = await _carsService.GetFilteredCarsAsync(
                 color,
@@ -54,6 +51,8 @@ namespace CarDealershipDemo.WebApi.Controllers
                 hasHeatedSeats,
                 mileageThreshold,
                 strictSearch,
+                page,
+                pageSize,
                 cancellationToken);
             return Ok(cars);
         }

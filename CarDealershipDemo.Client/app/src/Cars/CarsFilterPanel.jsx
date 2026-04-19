@@ -1,5 +1,5 @@
 import { carsApi } from '../App';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -17,8 +17,7 @@ function CarsFilterPanel(props) {
     const [mileageThresholdFilter, setMileageThresholdFilter] = useState(null);
     const [strictSearchMode, setStrictSearchMode] = useState(false);
 
-    function fetchFilteredCars(event) {
-        event.preventDefault();
+    function fetchFilteredCars() {
         let uri = `${carsApi}/filter?strictSearch=${strictSearchMode}`;
         if (!!colorFilter) {
           uri += `&color=${colorFilter}`;
@@ -62,6 +61,10 @@ function CarsFilterPanel(props) {
         props.clearFilters();
     }
 
+    useEffect(() => {
+      fetchFilteredCars();
+    }, [colorFilter, sunroofFilter, fourWheelDriveFilter, lowMilesFilter, powerWindowsFilter, navigationFilter, heatedSeatsFilter, mileageThresholdFilter, strictSearchMode])
+
     return (
         <Accordion>
         <Accordion.Item eventKey="0">
@@ -71,7 +74,7 @@ function CarsFilterPanel(props) {
             </svg>
           </Accordion.Header>
           <Accordion.Body>
-            <Form noValidate onSubmit={fetchFilteredCars} onReset={clearFilters} className="text-start">
+            <Form noValidate onReset={clearFilters} className="text-start">
               <Row>                
                 <Form.Group as={Col} sm={6} className="mb-3" controlId="colorOption">
                   <Form.Label>Color</Form.Label>
@@ -117,7 +120,6 @@ function CarsFilterPanel(props) {
                       <Form.Check type="checkbox" label="Match all criteria" onClick={e => setStrictSearchMode(e.target.checked)} />
                   </Form.Group>
                   <Form.Group>
-                    <Button variant="primary" type="submit" className="me-3">Apply</Button>
                     <Button variant="light" type="reset">Clear</Button>
                   </Form.Group>
                 </Col>

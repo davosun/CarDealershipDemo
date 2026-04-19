@@ -1,18 +1,10 @@
 using CarDealershipDemo.WebApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
+using Scalar.AspNetCore;
 
 namespace CarDealershipDemo.WebApi
 {
@@ -29,11 +21,11 @@ namespace CarDealershipDemo.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CarDealershipDemo.WebApi", Version = "v1" });
-            });
-
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "CarDealershipDemo.WebApi", Version = "v1" });
+            //});
+            services.AddOpenApi();
             services.AddScoped<ICarsService, CarsService>();
 
             services.AddSpaStaticFiles(config => {
@@ -47,8 +39,8 @@ namespace CarDealershipDemo.WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CarDealershipDemo.WebApi v1"));
+                //app.UseSwagger();
+                //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CarDealershipDemo.WebApi v1"));
             }
 
             app.UseHttpsRedirection();
@@ -62,6 +54,12 @@ namespace CarDealershipDemo.WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+
+                if (env.IsDevelopment())
+                {
+                    endpoints.MapOpenApi();
+                    endpoints.MapScalarApiReference();
+                }
             });
 
             app.UseSpa(spa => 

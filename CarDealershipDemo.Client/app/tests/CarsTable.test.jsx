@@ -1,6 +1,7 @@
+import { test, expect } from 'vitest';
 import { render } from '@testing-library/react';
-import App from '../App';
-import CarsTable from './CarsTable';
+import App from '../src/App';
+import CarsTable from '../src/Cars/CarsTable';
 
 test('renders 10 header', () => {
   render(<CarsTable cars={[]} />);
