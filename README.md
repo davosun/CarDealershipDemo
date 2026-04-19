@@ -29,4 +29,4 @@ Start a new command line session and navigate to the client directory `CarDealer
 npm install
 npm start
 ```
-Open a brower window and navigate to http://localhost:3000. You should now see a running version of this repo.
+Open a brower window and navigate to http://localhost:4173. You should now see a running version of this repo.
