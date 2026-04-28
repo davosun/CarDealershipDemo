@@ -1,13 +1,13 @@
-import { carsApi } from '../App';
 import { useEffect, useState } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { CarFilterArgs } from '../api';
 
-function CarsFilterPanel(props) {
-    const [colorFilter, setColorFilter] = useState('');
+function CarsFilterPanel({ applyFilters }) {
+    const [colorFilter, setColorFilter] = useState(null);
     const [sunroofFilter, setSunroofFilter] = useState(null);
     const [fourWheelDriveFilter, setFourWheelDriveFilter] = useState(null);
     const [lowMilesFilter, setLowMilesFilter] = useState(null);
@@ -15,54 +15,46 @@ function CarsFilterPanel(props) {
     const [navigationFilter, setNavigationFilter] = useState(null);
     const [heatedSeatsFilter, setHeatedSeatsFilter] = useState(null);
     const [mileageThresholdFilter, setMileageThresholdFilter] = useState(null);
-    const [strictSearchMode, setStrictSearchMode] = useState(false);
-
-    function fetchFilteredCars() {
-        let uri = `${carsApi}/filter?strictSearch=${strictSearchMode}`;
-        if (!!colorFilter) {
-          uri += `&color=${colorFilter}`;
-        }
-        if (!!sunroofFilter) {
-          uri += `&hasSunroof=${sunroofFilter}`
-        }
-        if (!!fourWheelDriveFilter) {
-          uri += `&isFourWheelDrive=${fourWheelDriveFilter}`;
-        }
-        if (!!lowMilesFilter) {
-          uri += `&hasLowMiles=${lowMilesFilter}`
-        }
-        if (!!powerWindowsFilter) {
-          uri += `&hasPowerWindows=${powerWindowsFilter}`;
-        }
-        if (!!navigationFilter) {
-          uri += `&hasNavigation=${navigationFilter}`
-        }
-        if (!!heatedSeatsFilter) {
-          uri += `&hasHeatedSeats=${heatedSeatsFilter}`;
-        }
-        if (!!mileageThresholdFilter) {
-          uri += `&mileageThreshold=${mileageThresholdFilter}`
-        }
-
-        props.fetchFilteredCars(uri);
-    }
+    const [strictSearchMode, setStrictSearchMode] = useState(null);
 
     function clearFilters() {
         setColorFilter(null);
-        setSunroofFilter(false);
-        setFourWheelDriveFilter(false);
-        setLowMilesFilter(false);
-        setPowerWindowsFilter(false);
-        setNavigationFilter(false);
-        setHeatedSeatsFilter(false);
-        setMileageThresholdFilter(false);
-        setStrictSearchMode(false);
+        setSunroofFilter(null);
+        setFourWheelDriveFilter(null);
+        setLowMilesFilter(null);
+        setPowerWindowsFilter(null);
+        setNavigationFilter(null);
+        setHeatedSeatsFilter(null);
+        setMileageThresholdFilter(null);
+        setStrictSearchMode(null);
 
-        props.clearFilters();
+        applyFilters(new CarFilterArgs());
     }
 
     useEffect(() => {
-      fetchFilteredCars();
+      if (strictSearchMode === null
+        && lowMilesFilter === null
+        && fourWheelDriveFilter === null
+        && navigationFilter === null
+        && heatedSeatsFilter === null
+        && powerWindowsFilter === null
+        && sunroofFilter === null
+        && colorFilter === null) {
+          return;
+        }
+        
+      const args = new CarFilterArgs();
+      args.strictSearch = strictSearchMode;
+      args.color = colorFilter;
+      args.isFourWheelDrive = fourWheelDriveFilter;
+      args.hasLowMiles = lowMilesFilter;
+      args.lowMileageThreshold = !Number.isNaN(parseInt(mileageThresholdFilter)) ? mileageThresholdFilter : 25000;
+      args.hasNavigation = navigationFilter;
+      args.hasPowerWindows = powerWindowsFilter;
+      args.hasSunroof = sunroofFilter;
+      args.hasHeatedSeats = heatedSeatsFilter;
+      
+      applyFilters(args);
     }, [colorFilter, sunroofFilter, fourWheelDriveFilter, lowMilesFilter, powerWindowsFilter, navigationFilter, heatedSeatsFilter, mileageThresholdFilter, strictSearchMode])
 
     return (
@@ -79,12 +71,14 @@ function CarsFilterPanel(props) {
                 <Form.Group as={Col} sm={6} className="mb-3" controlId="colorOption">
                   <Form.Label>Color</Form.Label>
                   <Form.Select onChange={e => setColorFilter(e.target.value)}>
-                    <option value="">No preference</option>
+                    <option value="">-- Any --</option>
                     <option value="Black">Black</option>
+                    <option value="Gray">Gray</option>
+                    <option value="Silver">Silver</option>
                     <option value="White">White</option>
                     <option value="Red">Red</option>
-                    <option value="Silver">Silver</option>
-                    <option value="Gray">Gray</option>
+                    <option value="Green">Green</option>
+                    <option value="Blue">Blue</option>
                   </Form.Select>
                 </Form.Group>
                 <Form.Group as={Col} sm={6} className="mb-3" controlId="mileageThresholdSetting">
@@ -120,7 +114,7 @@ function CarsFilterPanel(props) {
                       <Form.Check type="checkbox" label="Match all criteria" onClick={e => setStrictSearchMode(e.target.checked)} />
                   </Form.Group>
                   <Form.Group>
-                    <Button variant="light" type="reset">Clear</Button>
+                    <Button variant="secondary" type="reset">Clear</Button>
                   </Form.Group>
                 </Col>
               </Row>
