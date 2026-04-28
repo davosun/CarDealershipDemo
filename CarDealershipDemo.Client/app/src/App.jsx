@@ -1,5 +1,5 @@
 import './App.css';
-import { useEffect, useState, useEffectEvent } from 'react';
+import { useEffect, useState } from 'react';
 import Badge from 'react-bootstrap/Badge';
 import Spinner from 'react-bootstrap/Spinner';
 import CarsTable from './Cars/CarsTable';
