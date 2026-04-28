@@ -1,61 +1,54 @@
 import './App.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useEffectEvent } from 'react';
 import Badge from 'react-bootstrap/Badge';
+import Spinner from 'react-bootstrap/Spinner';
 import CarsTable from './Cars/CarsTable';
 import CarsFilterPanel from './Cars/CarsFilterPanel';
-
-export const carsApi = 'api/cars';
+import { fetchCars, CarFilterArgs } from './api'
 
 const defaultErrorMessage = 'Failed to load cars.';
 
 function App() {
-  const [cars, setCars] = useState([]);
+  const [cars, setCars] = useState(null);
+  const [args, setArgs] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchCars();
-  }, []);
-
-  async function fetchCars() {
-    try {
-      const response = await fetch(carsApi);
-      if (response.ok) {
-        response.json().then(data => setCars(data));
+    async function startCarsFetch(args, controller) {
+      const result = await fetchCars(args ?? new CarFilterArgs(), controller);
+      setCars(null);
+      setError(null);
+      if (result.error === null) {
+        setCars(result.cars);
       } else {
-        response.json()
-        .then(error => console.error(defaultErrorMessage, error))
-        .catch(() => console.error(defaultErrorMessage));
+        setError(result.error);
       }
-    } catch (error) {
-      console.error(defaultErrorMessage, error);
     }
-  }
-
-  async function fetchFilteredCars(uri) {
-    try {
-      const response = await fetch(uri);
-      if (response.ok) {
-        response.json().then(data => setCars(data));
-      } else {
-        response.json()
-        .then(error => console.error(defaultErrorMessage, error))
-        .catch(() => console.error(defaultErrorMessage));
-      }
-    } catch (error) {
-      console.error(defaultErrorMessage, error);
+    
+    const controller = new AbortController();
+    startCarsFetch(args, controller);
+    return () => {
+      controller.abort();
     }
-  }
-
-  function clearFilters() {
-    fetchCars();
-  }
+  }, [args]);
 
   return (
     <div className="App container">
       <h1>
         Car Dealership <Badge bg="warning">Demo</Badge>
       </h1>
-      <CarsFilterPanel fetchFilteredCars={fetchFilteredCars} clearFilters={clearFilters} />
-      <CarsTable cars={cars} />
+      {cars === null && error === null
+        ? <Spinner animation="border" variant="primary" />
+        : cars === [] 
+          ? <Badge bg="info">There are no cars at this dealership</Badge>
+        : error > null
+          ? <Badge bg="danger">Failed to load cars</Badge>
+        : (
+          <>
+            <CarsFilterPanel applyFilters={args => setArgs(args)} />
+            <CarsTable cars={cars} />          
+          </>
+        )}
     </div>
   );
 }

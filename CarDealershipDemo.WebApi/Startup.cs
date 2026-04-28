@@ -1,3 +1,8 @@
+using CarDealershipDemo.Core;
+using CarDealershipDemo.Core.Repositories;
+using CarDealershipDemo.Core.Services;
+using CarDealershipDemo.Infra.Data;
+using CarDealershipDemo.Infra.Data.Repositories;
 using CarDealershipDemo.WebApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,12 +26,18 @@ namespace CarDealershipDemo.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddProblemDetails();
             //services.AddSwaggerGen(c =>
             //{
             //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "CarDealershipDemo.WebApi", Version = "v1" });
             //});
             services.AddOpenApi();
-            services.AddScoped<ICarsService, CarsService>();
+
+            var connectionString = Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
+            services.AddAppDbContext(connectionString);
+
+            services.AddScoped<ICarRepository, CarRepository>();
+            services.AddScoped<ICarService, CarService>();
 
             services.AddSpaStaticFiles(config => {
                 config.RootPath = "app";
@@ -36,6 +47,9 @@ namespace CarDealershipDemo.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseExceptionHandler();
+            app.UseStatusCodePages();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
