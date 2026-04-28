@@ -21,7 +21,7 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.x'
+          dotnet-version: '10.x'
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
@@ -30,7 +30,7 @@ jobs:
         run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
       - name: Set up node.js
-        uses: actions/setup-node@v6.3.0
+        uses: actions/setup-node@v6
         with:
           node-version: 'lts/*'
 
@@ -39,8 +39,8 @@ jobs:
           cd CarDealershipDemo.Client/app
           npm install
           npm run build --if-present
-          md ${{env.DOTNET_ROOOT}}\myapp\app
-          xcopy build ${{env.DOTNET_ROOT}}\myapp\app /s
+          md "${{env.DOTNET_ROOT}}/myapp/app"
+          xcopy build "${{env.DOTNET_ROOT}}/myapp/app" /s
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
