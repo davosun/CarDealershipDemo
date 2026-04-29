@@ -15,9 +15,10 @@ function App() {
 
   useEffect(() => {
     async function startCarsFetch(args, controller) {
-      const result = await fetchCars(args ?? new CarFilterArgs(), controller);
       setCars(null);
       setError(null);
+      
+      const result = await fetchCars(args ?? new CarFilterArgs(), controller);
       if (result.error === null) {
         setCars(result.cars);
       } else {
