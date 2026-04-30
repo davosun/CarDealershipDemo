@@ -1,6 +1,6 @@
 import Car from './Cars/Car'
 
-export async function fetchCars(args: CarFilterArgs, controller: AbortController): Promise<CarsResult> {
+export async function fetchCars(args: CarFilterArgs, controller: AbortController, cars?: Car[]): Promise<CarsResult> {
     let uri: string = 'api/cars';
     uri += `?page=${args.page}`;
     uri += `&pageSize=${args.pageSize}`;
@@ -32,6 +32,9 @@ export async function fetchCars(args: CarFilterArgs, controller: AbortController
     } catch (ex: any) {
         if (ex.name === 'AbortError') {
             console.warn(ex);
+            if (cars) {
+                result.cars = cars;
+            }
             return result;
         }
         result.error = new ErrorResult();

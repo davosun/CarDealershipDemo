@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Spinner from 'react-bootstrap/Spinner';
 import { CarFilterArgs } from '../api';
 
-function CarsFilterPanel({ applyFilters }) {
+function CarsFilterPanel({ applyFilters, loading }) {
     const [colorFilter, setColorFilter] = useState(null);
     const [sunroofFilter, setSunroofFilter] = useState(null);
     const [fourWheelDriveFilter, setFourWheelDriveFilter] = useState(null);
@@ -14,8 +15,10 @@ function CarsFilterPanel({ applyFilters }) {
     const [powerWindowsFilter, setPowerWindowsFilter] = useState(null);
     const [navigationFilter, setNavigationFilter] = useState(null);
     const [heatedSeatsFilter, setHeatedSeatsFilter] = useState(null);
-    const [mileageThresholdFilter, setMileageThresholdFilter] = useState(null);
+    const [lowMileageThresholdFilter, setLowMileageThresholdFilter] = useState(null);
     const [strictSearchMode, setStrictSearchMode] = useState(null);
+    const debouncedLowMileageThreshold = useDebounce(lowMileageThresholdFilter, 500);
+    const prevLowMileageThreshold = useRef(lowMileageThresholdFilter);
 
     function clearFilters() {
         setColorFilter(null);
@@ -25,7 +28,7 @@ function CarsFilterPanel({ applyFilters }) {
         setPowerWindowsFilter(null);
         setNavigationFilter(null);
         setHeatedSeatsFilter(null);
-        setMileageThresholdFilter(null);
+        setLowMileageThresholdFilter(null);
         setStrictSearchMode(null);
 
         applyFilters(new CarFilterArgs());
@@ -42,20 +45,27 @@ function CarsFilterPanel({ applyFilters }) {
         && colorFilter === null) {
           return;
         }
+
+      if (!lowMilesFilter && debouncedLowMileageThreshold !== prevLowMileageThreshold.current) {
+        prevLowMileageThreshold.current = debouncedLowMileageThreshold;
+        return;
+      }
+
+      prevLowMileageThreshold.current = debouncedLowMileageThreshold;
         
       const args = new CarFilterArgs();
       args.strictSearch = strictSearchMode;
       args.color = colorFilter;
       args.isFourWheelDrive = fourWheelDriveFilter;
       args.hasLowMiles = lowMilesFilter;
-      args.lowMileageThreshold = !Number.isNaN(parseInt(mileageThresholdFilter)) ? mileageThresholdFilter : 25000;
+      args.lowMileageThreshold = !Number.isNaN(parseInt(debouncedLowMileageThreshold)) ? debouncedLowMileageThreshold : 25000;
       args.hasNavigation = navigationFilter;
       args.hasPowerWindows = powerWindowsFilter;
       args.hasSunroof = sunroofFilter;
       args.hasHeatedSeats = heatedSeatsFilter;
       
       applyFilters(args);
-    }, [colorFilter, sunroofFilter, fourWheelDriveFilter, lowMilesFilter, powerWindowsFilter, navigationFilter, heatedSeatsFilter, mileageThresholdFilter, strictSearchMode])
+    }, [colorFilter, sunroofFilter, fourWheelDriveFilter, lowMilesFilter, powerWindowsFilter, navigationFilter, heatedSeatsFilter, debouncedLowMileageThreshold, strictSearchMode])
 
     return (
         <Accordion>
@@ -83,7 +93,7 @@ function CarsFilterPanel({ applyFilters }) {
                 </Form.Group>
                 <Form.Group as={Col} sm={6} className="mb-3" controlId="mileageThresholdSetting">
                   <Form.Label>Low Mileage Threshold</Form.Label>
-                  <Form.Control type="number" placeholder="25000" onKeyUp={e => setMileageThresholdFilter(e.target.value)} />
+                  <Form.Control type="number" placeholder="25000" onChange={e => setLowMileageThresholdFilter(e.target.value)} />
                 </Form.Group>
               </Row>
               <Row>
@@ -113,9 +123,10 @@ function CarsFilterPanel({ applyFilters }) {
                   <Form.Group className="mb-3" controlId="strictSearchOption">
                       <Form.Check type="checkbox" label="Match all criteria" onClick={e => setStrictSearchMode(e.target.checked)} />
                   </Form.Group>
-                  <Form.Group>
+                  <Form.Group className="mb-3">
                     <Button variant="secondary" type="reset">Clear</Button>
                   </Form.Group>
+                  <Spinner animation="border" variant="info" style={{ visibility: loading ? 'visible' : 'hidden' }} />
                 </Col>
               </Row>
             </Form>
@@ -123,6 +134,24 @@ function CarsFilterPanel({ applyFilters }) {
         </Accordion.Item>
       </Accordion>
     );
+}
+
+function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    // Set a timer to update the debounced value after the delay
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    // Cleanup: clear the timer if value or delay changes before it fires
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
 }
 
 export default CarsFilterPanel;

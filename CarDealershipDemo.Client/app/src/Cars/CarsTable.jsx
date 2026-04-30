@@ -18,7 +18,7 @@ function CarsTable({ cars }) {
         </tr>
       </thead>
       <tbody>
-        {cars.map((car, index) => {
+        {cars?.map((car, index) => {
           return (
             <tr key={index}>
               <td>{car.make}</td>
@@ -33,20 +33,20 @@ function CarsTable({ cars }) {
               <td>{car.displayPrice}</td>
               <td>{car.isFourWheelDrive ? '4WD' : '2WD'}</td>
               <td>{car.hasSunroof
-                ? <CheckCircleSuccess />
-                : <XCircleDanger />}
+                ? <YesIcon />
+                : <NoIcon />}
               </td>
               <td>{car.hasPowerWindows
-                ? <CheckCircleSuccess />
-                : <XCircleDanger />}
+                ? <YesIcon />
+                : <NoIcon />}
               </td>
               <td>{car.hasNavigation
-                ? <CheckCircleSuccess />
-                : <XCircleDanger />}
+                ? <YesIcon />
+                : <NoIcon />}
               </td>
               <td>{car.hasHeatedSeats
-                ? <CheckCircleSuccess />
-                : <XCircleDanger />}
+                ? <YesIcon />
+                : <NoIcon />}
               </td>
             </tr>
         )})}
@@ -55,7 +55,7 @@ function CarsTable({ cars }) {
   );
 }
 
-function CheckCircleSuccess() {
+function YesIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-check-circle text-success" viewBox="0 0 16 16">
       <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -64,7 +64,7 @@ function CheckCircleSuccess() {
   );
 }
 
-function XCircleDanger() {
+function NoIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-circle text-danger" viewBox="0 0 16 16">
       <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
