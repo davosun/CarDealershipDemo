@@ -1,4 +1,5 @@
-﻿using CarDealershipDemo.Core.FilterArgs;
+﻿using CarDealershipDemo.Core.Entities;
+using CarDealershipDemo.Core.FilterArgs;
 using CarDealershipDemo.Core.Repositories;
 using CarDealershipDemo.Core.Services;
 using CarDealershipDemo.Infra.Data;
@@ -112,6 +113,23 @@ namespace CarDealershipDemo.Tests
                 .FirstOrDefault(path => path.EndsWith(seedPathSearch), string.Empty);
             Console.WriteLine(seedPath);
             Assert.EndsWith("Cars.json", seedPath);
+        }
+
+        [TestMethod]
+        public void SetModifiedState()
+        {
+            var car = new Car
+            {
+                Id = Guid.NewGuid(),
+                Make = string.Empty,
+                IsActive = true,
+            };
+            _db.Attach(car);
+                
+            car.Make = "Test";
+
+            var state = _db.Entry(car).State;
+            Assert.AreEqual(EntityState.Modified, state);
         }
     }
 }
