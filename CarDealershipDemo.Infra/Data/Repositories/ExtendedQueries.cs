@@ -10,6 +10,7 @@ namespace CarDealershipDemo.Infra.Data.Repositories
                 .ThenBy(car => car.Miles)
                 .ThenBy(car => car.Price)
                 .ThenBy(car => car.Make)
+                .ThenByDescending(car => car.CreatedDate)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize);
     }

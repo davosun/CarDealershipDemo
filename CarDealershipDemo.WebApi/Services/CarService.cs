@@ -67,6 +67,7 @@ namespace CarDealershipDemo.WebApi.Services
                 car.HasHeatedSeats,
                 cancellationToken);
             car.Id = newCar.Id.ToString();
+            car.ColorHexCode = newCar.ColorHexCode;
             car.IsActive = newCar.IsActive;
             return car;
         }
