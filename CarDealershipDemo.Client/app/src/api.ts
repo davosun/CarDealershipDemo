@@ -171,4 +171,7 @@ export class ErrorResult {
   title: string = '';
   detail: string = '';
   errors: any;
+  type: string = '';
+  instance: string = '';
+  traceId: string = '';
 }

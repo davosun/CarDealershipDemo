@@ -83,7 +83,8 @@ export default function EditCarModal({ show, onHide, handleUpdate, car, index })
           <Form.Group as={Row} className="mb-3" controlId="carMake">
             <Form.Label column sm={4}>Make</Form.Label>
             <Col sm={8}>
-              <Form.Control type="text" placeholder="Enter the make..." required defaultValue={make} onChange={e => setMake(e.target.value)} />
+              <Form.Control type="text" placeholder="Enter the make..." required maxLength={50} defaultValue={make} onChange={e => setMake(e.target.value)} />
+              <Form.Control.Feedback type="invalid">Car make is required and has a max length of 50 characters</Form.Control.Feedback>
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3" controlId="carYear">
@@ -100,7 +101,8 @@ export default function EditCarModal({ show, onHide, handleUpdate, car, index })
           <Form.Group as={Row} className="mb-3" controlId="carMileage">
             <Form.Label column sm={4}>Miles</Form.Label>
             <Col sm={8}>
-              <Form.Control type="number" placeholder="Enter the mileage (to nearest whole mile)..." required defaultValue={miles} onChange={e => setMiles(e.target.value)} />
+              <Form.Control type="number" placeholder="Enter the mileage (to nearest whole mile)..." required min={0} max={999999} defaultValue={miles} onChange={e => setMiles(e.target.value)} />
+              <Form.Control.Feedback type="invalid">Mileage is required and must be between 0 and 999999 (inclusive)</Form.Control.Feedback>
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3" controlId="carColor">
@@ -169,8 +171,9 @@ export default function EditCarModal({ show, onHide, handleUpdate, car, index })
             <Col sm={8}>
               <InputGroup>
                 <InputGroup.Text>$</InputGroup.Text>
-                <Form.Control type="number" required defaultValue={price} placeholder="Enter the price (to nearest whole dollar)..." onChange={e => setPrice(e.target.value)} />
+                <Form.Control type="number" required min={0} max={999999999} defaultValue={price} placeholder="Enter the price (to nearest whole dollar)..." onChange={e => setPrice(e.target.value)} />
                 <InputGroup.Text>.00</InputGroup.Text>
+                <Form.Control.Feedback type="invalid">Price is required and must be between 0 and 999999999 (inclusive)</Form.Control.Feedback>
               </InputGroup>
             </Col>
           </Form.Group>

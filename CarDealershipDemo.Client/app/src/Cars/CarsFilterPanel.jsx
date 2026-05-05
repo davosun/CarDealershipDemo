@@ -92,7 +92,7 @@ function CarsFilterPanel({ applyFilters, loading }) {
               <Form.Group as={Col} sm={6} className="mb-3" controlId="colorOption">
                 <Form.Label>Color</Form.Label>
                 <Form.Select onChange={e => setColorFilter(e.target.value)}>
-                  <option>-- Any --</option>
+                  <option value="">-- Any --</option>
                   <option value="Black">Black</option>
                   <option value="Gray">Gray</option>
                   <option value="Silver">Silver</option>
@@ -105,7 +105,7 @@ function CarsFilterPanel({ applyFilters, loading }) {
               </Form.Group>
               <Form.Group as={Col} sm={6} className="mb-3" controlId="mileageThresholdSetting">
                 <Form.Label>Low Mileage Threshold</Form.Label>
-                <Form.Control type="number" placeholder="25000" onChange={e => setLowMileageThresholdFilter(e.target.value)} />
+                <Form.Control type="number" min="0" max="999999" placeholder="25000" onChange={e => setLowMileageThresholdFilter(e.target.value)} />
               </Form.Group>
             </Row>
             <Row>

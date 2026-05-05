@@ -24,7 +24,7 @@ namespace CarDealershipDemo.Infra.Data.Repositories
                 return query;
             }
 
-            var validColor = Enum.TryParse<Color>(args.Color, out var color);
+            var validColor = Enum.TryParse<Color>(args.Color, ignoreCase: true, out var color);
             if (args.StrictSearch)
             {
                 query = query.Where(car
@@ -74,7 +74,7 @@ namespace CarDealershipDemo.Infra.Data.Repositories
             var car = CarFactory.Create(
                 make,
                 year,
-                Enum.Parse<Color>(color),
+                Enum.Parse<Color>(color, ignoreCase: true),
                 miles,
                 price,
                 isFourWheelDrive ? Drivetrain.FourWheel : Drivetrain.TwoWheel,
@@ -113,7 +113,7 @@ namespace CarDealershipDemo.Infra.Data.Repositories
             car.Year = year;
             car.Miles = miles;
             car.Price = price;
-            car.Color = Enum.Parse<Color>(color);
+            car.Color = Enum.Parse<Color>(color, ignoreCase: true);
             car.Drivetrain = isFourWheelDrive ? Drivetrain.FourWheel : Drivetrain.TwoWheel;
             car.HasPowerWindows = hasPowerWindows;
             car.HasSunroof = hasSunroof;
