@@ -4,7 +4,7 @@ namespace CarDealershipDemo.Core.Entities
 {
     public class Car : IEntity
     {
-        private string _colorHexCode = "000000";
+        private string _colorHexCode = "#000000";
 
         public Guid Id { get; set; }
         public DateTime CreatedDate { get; set; }
