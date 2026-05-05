@@ -1,12 +1,15 @@
 ## 🚗 Car Dealership Demo
 
-A full-stack web application demonstrating modern enterprise application patterns using:
+A full-stack web application demonstrating modern enterprise application patterns, including API-driven architecture, relational data modeling, and cloud deployment on Azure.
 
-- ASP.NET Core (.NET 10) backend
-- React (Vite) frontend
-- RESTful API architecture
-- Entity Framework Core with Azure SQL
-- Azure App Service deployment
+---
+
+### 🧰 Tech Stack
+
+- Backend: ASP.NET Core (.NET 10)
+- Frontend: React (Vite)
+- Data: Azure SQL, Entity Framework Core
+- Cloud: Azure App Service
 
 ---
 
@@ -14,46 +17,21 @@ A full-stack web application demonstrating modern enterprise application pattern
 
 https://cardealershipdemo.azurewebsites.net
 
+> ⚠️ Note: The live demo uses a cost-optimized Azure SQL tier that may pause after inactivity. 
+> The first request after idle periods can take up to ~60 seconds to respond due to database warm-up in a serverless/cost-optimized configuration.
+
 ---
 
 ### 🔧 Key Highlights
 
 - Modernized legacy project from .NET 5 → .NET 10
 - Migrated frontend from Create React App → Vite for improved performance and maintainability
-- Implemented full CRUD workflows for vehicle inventory management
-- Designed RESTful APIs supporting real-world business operations
+- Implemented full CRUD workflows for vehicle inventory 
+- Designed RESTful APIs for real-world business workflows
 - Implemented dynamic filtering with real-time API queries (feature-based, mileage thresholds, strict matching)
-- Added frontend and backend validation to enforce required fields and data integrity
-- Designed user-friendly error handling with inline messaging for API responses
+- Implemented frontend and backend validation to enforce data integrity
+- Implemented user-friendly error handling with inline messaging for API responses
 - Deployed full-stack application to Azure
-
----
-
-### 🗄️ Data Layer
-
-- Integrated Azure SQL Database for persistent storage
-- Implemented Entity Framework Core for data access and schema management
-- Created and applied migrations for database versioning
-- Seeded realistic data to support application workflows
-
----
-
-### 🏗️ Architecture
-
-- Lightweight Clean Architecture-inspired structure:
-  - **Core**: domain models and interfaces
-  - **Infrastructure**: EF Core persistence and data access
-  - **API**: controllers, services, and application composition
-- Separation of concerns between domain, persistence, and API layers
-- Designed for scalability without unnecessary complexity
-
----
-
-### 🔁 Data Lifecycle & Integrity
-
-- Implemented **soft-delete behavior** using an `IsActive` flag to preserve historical data
-- Centralized audit field management (`CreatedDate`, `ModifiedDate`) using EF Core change tracking
-- Used surrogate keys for entity identity, allowing flexibility for business workflows and data preservation
 
 ---
 
@@ -68,14 +46,6 @@ https://cardealershipdemo.azurewebsites.net
 
 ---
 
-### ☁️ Deployment
-
-- Hosted on Azure App Service
-- Azure SQL used for relational data storage
-- Environment-based configuration for cloud deployment
-
----
-
 ### 🎛️ User Experience & Interaction
 
 - Real-time filtering of vehicle inventory via API-driven queries
@@ -85,8 +55,55 @@ https://cardealershipdemo.azurewebsites.net
 - Instant UI updates based on filter changes
 - Ability to reset all filters in a single action
 - Frontend validation with immediate feedback for required fields
-- Backend validation to ensure data integrity across requests
 - Graceful error handling with user-facing alert messages (non-blocking UI)
+
+---
+
+### 🗄️ Data Layer
+
+- Integrated Azure SQL Database for persistent storage
+- Implemented Entity Framework Core for data access and schema management
+- Created and applied migrations for database versioning
+- Seeded realistic data for demonstration and testing
+
+---
+
+### 🏗️ Architecture
+
+- Lightweight Clean Architecture-inspired structure:
+  - **Core**: domain models and interfaces
+  - **Infrastructure**: EF Core persistence and data access
+  - **API**: controllers, services, and application composition
+- Separation of concerns between domain, persistence, and API layers
+- Designed for scalability while avoiding unnecessary complexity
+
+---
+
+### 🔁 Data Lifecycle & Integrity
+
+- Implemented **soft-delete behavior** using an `IsActive` flag to preserve historical data
+- Centralized audit field management (`CreatedDate`, `ModifiedDate`) using EF Core change tracking
+- Used surrogate keys for entity identity, allowing flexibility for business workflows and data preservation
+
+---
+
+### 🔐 Security & Configuration
+
+- Uses Azure system-assigned managed identity for passwordless access to Azure SQL
+- Stores runtime configuration in Azure App Service environment settings without embedding credentials in source code
+- Limits API documentation tooling to local/development environments
+- Authentication and authorization intentionally omitted to keep the demo publicly accessible and focused on core application behavior
+- Production next steps would include role-based authorization, Azure Key Vault, separate deployment slots, staging validation, and App Service slot swaps for safer releases and rollback
+
+---
+
+### ☁️ Cloud & Deployment
+
+- Hosted on Azure App Service
+- Azure SQL used for relational data storage
+- Environment-based configuration for cloud deployment
+- Uses GitHub-managed secrets for CI/CD deployment workflows
+- Demonstrates secure, credential-free database access using managed identity
 
 ---
 
