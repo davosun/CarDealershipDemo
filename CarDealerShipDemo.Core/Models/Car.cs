@@ -1,3 +1,4 @@
+using CarDealershipDemo.Core.Lookups;
 using System.Globalization;
 using System.Text.Json.Serialization;
 
@@ -14,7 +15,15 @@ namespace CarDealershipDemo.Core.Models
         public string? DisplayMiles => Miles.ToString("N0", _culture);
         public required string Make { get; set; }
         public required string Color { get; set; }
-        public string? ColorHexCode { get; set; }
+        public string? ColorHexCode
+        {
+            get
+            {
+                var color = Enum.Parse<Color>(Color);
+                var hexCode = $"#{(int)color:X6}";
+                return hexCode;
+            }
+        }
         public decimal Price { get; set; }
         public string? DisplayPrice => Price.ToString("C", _culture);
         public bool HasSunroof { get; set; }

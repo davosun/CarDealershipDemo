@@ -39,7 +39,7 @@ namespace CarDealershipDemo.Infra.Data
                 .HasDefaultValueSql("current_timestamp")
                 .ValueGeneratedOnAddOrUpdate();
             dtProp.Metadata.SetBeforeSaveBehavior(PropertySaveBehavior.Ignore);
-            dtProp.Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
+            dtProp.Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Save);
 
             modelBuilder.Entity<Car>()
                 .Property(c => c.IsActive)
@@ -179,6 +179,24 @@ namespace CarDealershipDemo.Infra.Data
                     }
                 }
             });
+        }
+
+        public override int SaveChanges()
+        {
+            return SaveChangesAsync().GetAwaiter().GetResult();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var entries = ChangeTracker
+                .Entries<IEntity>()
+                .Where(entry => entry.State == EntityState.Modified);
+            foreach (var entry in entries)
+            {
+                entry.Entity.ModifiedDate = DateTime.UtcNow;
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }

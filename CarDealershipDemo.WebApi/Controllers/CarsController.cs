@@ -2,7 +2,6 @@
 using CarDealershipDemo.Core.Models;
 using CarDealershipDemo.Core.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -50,7 +49,7 @@ namespace CarDealershipDemo.WebApi.Controllers
         public async Task<IActionResult> UpdateCarAsync(string carId, Car dto, CancellationToken cancellationToken = default)
         {
             await _carService.UpdateCarAsync(carId, dto, cancellationToken);
-            return NoContent();
+            return Ok(dto);
         }
 
         [HttpDelete("{carId}")]

@@ -24,7 +24,6 @@ namespace CarDealershipDemo.WebApi.Services
             Year = car.Year,
             Miles = car.Miles,
             Color = Enum.GetName(car.Color),
-            ColorHexCode = car.ColorHexCode,
             IsFourWheelDrive = car.Drivetrain == Drivetrain.FourWheel,
             HasNavigation = car.HasNavigation,
             HasHeatedSeats = car.HasHeatedSeats,
@@ -67,7 +66,6 @@ namespace CarDealershipDemo.WebApi.Services
                 car.HasHeatedSeats,
                 cancellationToken);
             car.Id = newCar.Id.ToString();
-            car.ColorHexCode = newCar.ColorHexCode;
             car.IsActive = newCar.IsActive;
             return car;
         }

@@ -7,20 +7,20 @@ import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
 import { useState, useMemo, useRef } from 'react';
-import { addCar } from '../api';
+import { updateCar } from '../api';
 import Car from './Car';
 
-export default function AddCarModal({ show, onHide, onCarAdded }) {
-  const [make, setMake] = useState(null);
-  const [year, setYear] = useState(null);
-  const [miles, setMiles] = useState(null);
-  const [price, setPrice] = useState(null);
-  const [color, setColor] = useState(null);
-  const [isFourWheelDrive, setIsFourWheelDrive] = useState(null);
-  const [hasPowerWindows, setHasPowerWindows] = useState(null);
-  const [hasNavigation, setHasNavigation] = useState(null);
-  const [hasHeatedSeats, setHasHeatedSeats] = useState(null);
-  const [hasSunroof, setHasSunroof] = useState(null);
+export default function EditCarModal({ show, onHide, handleUpdate, car, index }) {
+  const [make, setMake] = useState(car.make);
+  const [year, setYear] = useState(car.year);
+  const [miles, setMiles] = useState(car.miles);
+  const [price, setPrice] = useState(car.price);
+  const [color, setColor] = useState(car.color);
+  const [isFourWheelDrive, setIsFourWheelDrive] = useState(car.isFourWheelDrive);
+  const [hasPowerWindows, setHasPowerWindows] = useState(car.hasPowerWindows);
+  const [hasNavigation, setHasNavigation] = useState(car.hasNavigation);
+  const [hasHeatedSeats, setHasHeatedSeats] = useState(car.hasHeatedSeats);
+  const [hasSunroof, setHasSunroof] = useState(car.hasSunroof);
   const [validated, setValidated] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(false);
@@ -47,7 +47,6 @@ export default function AddCarModal({ show, onHide, onCarAdded }) {
     if (isValid) {
       setSubmitting(true);
       // handle submission
-      const car = new Car();
       car.make = make;
       car.year = year;
       car.miles = miles;
@@ -59,14 +58,14 @@ export default function AddCarModal({ show, onHide, onCarAdded }) {
       car.hasSunroof = hasSunroof;
       car.price = price;
 
-      const result = await addCar(car);
+      const result = await updateCar(car);
       if (result.error !== null) {
         setError(true);
       } else {
         setError(false);
         setValidated(false);
         form.reset();
-        onCarAdded(result.cars[0]);
+        handleUpdate(result.cars[0], index);
       }
 
       setSubmitting(false);
@@ -76,7 +75,7 @@ export default function AddCarModal({ show, onHide, onCarAdded }) {
   return (
     <Modal show={show} onHide={onHide} centered className="text-start" size="lg">
       <Modal.Header closeButton>
-        <Modal.Title>Add Car</Modal.Title>
+        <Modal.Title>Edit Car</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form noValidate validated={validated} onSubmit={handleSubmit} ref={formRef}>
@@ -84,13 +83,13 @@ export default function AddCarModal({ show, onHide, onCarAdded }) {
           <Form.Group as={Row} className="mb-3" controlId="carMake">
             <Form.Label column sm={4}>Make</Form.Label>
             <Col sm={8}>
-              <Form.Control type="text" placeholder="Enter the make..." required onChange={e => setMake(e.target.value)} />
+              <Form.Control type="text" placeholder="Enter the make..." required defaultValue={make} onChange={e => setMake(e.target.value)} />
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3" controlId="carYear">
             <Form.Label column sm={4}>Year</Form.Label>
             <Col sm={8}>
-              <Form.Select required onChange={e => setYear(e.target.value)}>
+              <Form.Select required defaultValue={year} onChange={e => setYear(e.target.value)}>
                 <option value="">Select the year...</option>
                 {years.map((year, index) => {
                   return <option key={index} value={year}>{year}</option>
@@ -101,13 +100,13 @@ export default function AddCarModal({ show, onHide, onCarAdded }) {
           <Form.Group as={Row} className="mb-3" controlId="carMileage">
             <Form.Label column sm={4}>Miles</Form.Label>
             <Col sm={8}>
-              <Form.Control type="number" placeholder="Enter the mileage (to nearest whole mile)..." required onChange={e => setMiles(e.target.value)} />
+              <Form.Control type="number" placeholder="Enter the mileage (to nearest whole mile)..." required defaultValue={miles} onChange={e => setMiles(e.target.value)} />
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3" controlId="carColor">
             <Form.Label column sm={4}>Color</Form.Label>
             <Col sm={8}>
-              <Form.Select required onChange={e => setColor(e.target.value)}>
+              <Form.Select required defaultValue={color} onChange={e => setColor(e.target.value)}>
                 <option value="">Select the color...</option>
                 <option value="Black">Black</option>
                 <option value="Gray">Gray</option>
@@ -124,8 +123,8 @@ export default function AddCarModal({ show, onHide, onCarAdded }) {
             <Form.Group as={Row} className="mb-3">
               <Form.Label column sm={4}>Drivetrain</Form.Label>
               <Col sm={8}>
-                <Form.Check type="radio" inline label="2WD" name="drivetrainOption" id="drivetrain-2wd" required onClick={() => setIsFourWheelDrive(false)} />
-                <Form.Check type="radio" inline label="4WD" name="drivetrainOption" id="drivetrain-4wd" required onClick={() => setIsFourWheelDrive(true)} />
+                <Form.Check type="radio" inline label="2WD" name="drivetrainOption" id="drivetrain-2wd" required defaultChecked={!isFourWheelDrive} onClick={() => setIsFourWheelDrive(false)} />
+                <Form.Check type="radio" inline label="4WD" name="drivetrainOption" id="drivetrain-4wd" required defaultChecked={isFourWheelDrive} onClick={() => setIsFourWheelDrive(true)} />
               </Col>
             </Form.Group>
           </fieldset>
@@ -133,8 +132,8 @@ export default function AddCarModal({ show, onHide, onCarAdded }) {
             <Form.Group as={Row} className="mb-3">
               <Form.Label column sm={4}>Power Windows</Form.Label>
               <Col sm={8}>
-                <Form.Check type="radio" inline label="No" name="powerWindowsOption" id="powerWindows-no" required onClick={() => setHasPowerWindows(false)} />
-                <Form.Check type="radio" inline label="Yes" name="powerWindowsOption" id="powerWindows-yes" required onClick={() => setHasPowerWindows(true)} />
+                <Form.Check type="radio" inline label="No" name="powerWindowsOption" id="powerWindows-no" required defaultChecked={!hasPowerWindows} onClick={() => setHasPowerWindows(false)} />
+                <Form.Check type="radio" inline label="Yes" name="powerWindowsOption" id="powerWindows-yes" required defaultChecked={hasPowerWindows} onClick={() => setHasPowerWindows(true)} />
               </Col>
             </Form.Group>
           </fieldset>
@@ -142,8 +141,8 @@ export default function AddCarModal({ show, onHide, onCarAdded }) {
             <Form.Group as={Row} className="mb-3">
               <Form.Label column sm={4}>Navigation</Form.Label>
               <Col sm={8}>
-                <Form.Check type="radio" inline label="No" name="navigationOption" id="navigation-no" required onClick={() => setHasNavigation(false)} />
-                <Form.Check type="radio" inline label="Yes" name="navigationOption" id="navigation-yes" required onClick={() => setHasNavigation(true)} />
+                <Form.Check type="radio" inline label="No" name="navigationOption" id="navigation-no" required defaultChecked={!hasNavigation} onClick={() => setHasNavigation(false)} />
+                <Form.Check type="radio" inline label="Yes" name="navigationOption" id="navigation-yes" required defaultChecked={hasNavigation} onClick={() => setHasNavigation(true)} />
               </Col>
             </Form.Group>
           </fieldset>
@@ -151,8 +150,8 @@ export default function AddCarModal({ show, onHide, onCarAdded }) {
             <Form.Group as={Row} className="mb-3">
               <Form.Label column sm={4}>Heated Seats</Form.Label>
               <Col sm={8}>
-                <Form.Check type="radio" inline label="No" name="HeatedSeatsOption" id="heatedSeats-no" required onClick={() => setHasHeatedSeats(false)} />
-                <Form.Check type="radio" inline label="Yes" name="HeatedSeatsOption" id="heatedSeats-yes" required onClick={() => setHasHeatedSeats(true)} />
+                <Form.Check type="radio" inline label="No" name="HeatedSeatsOption" id="heatedSeats-no" required defaultChecked={!hasHeatedSeats} onClick={() => setHasHeatedSeats(false)} />
+                <Form.Check type="radio" inline label="Yes" name="HeatedSeatsOption" id="heatedSeats-yes" required defaultChecked={hasHeatedSeats} onClick={() => setHasHeatedSeats(true)} />
               </Col>
             </Form.Group>
           </fieldset>
@@ -160,8 +159,8 @@ export default function AddCarModal({ show, onHide, onCarAdded }) {
             <Form.Group as={Row} className="mb-3">
               <Form.Label column sm={4}>Sunroof</Form.Label>
               <Col sm={8}>
-                <Form.Check type="radio" inline label="No" name="sunroofOption" id="sunroof-no" required onClick={() => setHasSunroof(false)} />
-                <Form.Check type="radio" inline label="Yes" name="sunroofOption" id="sunroof-yes" required onClick={() => setHasSunroof(true)} />
+                <Form.Check type="radio" inline label="No" name="sunroofOption" id="sunroof-no" required defaultChecked={!hasSunroof} onClick={() => setHasSunroof(false)} />
+                <Form.Check type="radio" inline label="Yes" name="sunroofOption" id="sunroof-yes" required defaultChecked={hasSunroof} onClick={() => setHasSunroof(true)} />
               </Col>
             </Form.Group>
           </fieldset>
@@ -170,7 +169,7 @@ export default function AddCarModal({ show, onHide, onCarAdded }) {
             <Col sm={8}>
               <InputGroup>
                 <InputGroup.Text>$</InputGroup.Text>
-                <Form.Control type="number" required placeholder="Enter the price (to nearest whole dollar)..." onChange={e => setPrice(e.target.value)} />
+                <Form.Control type="number" required defaultValue={price} placeholder="Enter the price (to nearest whole dollar)..." onChange={e => setPrice(e.target.value)} />
                 <InputGroup.Text>.00</InputGroup.Text>
               </InputGroup>
             </Col>
@@ -180,7 +179,7 @@ export default function AddCarModal({ show, onHide, onCarAdded }) {
           ? (
             <Alert variant="danger">
               <Alert.Heading>Error</Alert.Heading>
-              <p>Failed to add car</p>
+              <p>Failed to update car</p>
             </Alert> 
           )
           : ''}

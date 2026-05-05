@@ -128,7 +128,8 @@ namespace CarDealershipDemo.Infra.Data.Repositories
             var car = new Car
             {
                 Id = Guid.Parse(id),
-                Make = string.Empty
+                Make = string.Empty,
+                IsActive = true
             };
             _db.Cars.Attach(car);
 

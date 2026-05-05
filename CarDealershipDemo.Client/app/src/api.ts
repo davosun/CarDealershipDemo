@@ -1,7 +1,7 @@
-import Car from './Cars/Car'
+import Car from './Cars/Car';
 
-export async function fetchCars(args: CarFilterArgs, controller: AbortController, cars?: Car[]): Promise<CarsResult> {
-  let uri: string = 'api/cars';
+export async function fetchCars(args: CarFilterArgs, controller: AbortController, cars?: Car[]) {
+  let uri = 'api/cars';
   uri += `?page=${args.page}`;
   uri += `&pageSize=${args.pageSize}`;
   uri += args.strictSearch ? `&strictSearch=${args.strictSearch}` : '';
@@ -16,7 +16,11 @@ export async function fetchCars(args: CarFilterArgs, controller: AbortController
   const result = new CarsResult();
   const signal = controller.signal;
   try {
-    const response = await fetch(uri, { signal })
+    const response = await fetch(uri, {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' },
+      signal: signal
+     })
     if (response.ok) {
       result.cars = await response.json();
     } else {
@@ -47,7 +51,7 @@ export async function fetchCars(args: CarFilterArgs, controller: AbortController
 }
 
 export async function addCar(car: Car) {
-  const uri: string = 'api/cars';
+  const uri = 'api/cars';
   const result = new CarsResult();
   try {
     const response = await fetch(uri, {
@@ -57,6 +61,69 @@ export async function addCar(car: Car) {
     });
     if (response.ok) {
       car = await response.json();
+      result.cars = [car];
+    } else {
+      const err = await response.json();      
+      const error = new ErrorResult();
+      error.status = err.status;
+      error.title = err.title;
+      error.detail = err.detail ?? '';
+      error.errors = err.errors ?? null;
+      result.error = error;
+      console.error(err);
+    }
+  } catch (ex: any) {
+    result.error = new ErrorResult();
+    result.error.status = -1;
+    result.error.title = ex.message;
+    console.error(ex);
+  }
+
+  return result;
+}
+
+export async function updateCar(car: Car) {
+  const uri = `api/cars/${car._id}`;
+  const result = new CarsResult();
+  try {
+    const response = await fetch(uri, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(car)
+    });
+    if (response.ok) {
+      car = await response.json();
+      result.cars = [car];
+    } else {
+      const err = await response.json();      
+      const error = new ErrorResult();
+      error.status = err.status;
+      error.title = err.title;
+      error.detail = err.detail ?? '';
+      error.errors = err.errors ?? null;
+      result.error = error;
+      console.error(err);
+    }
+  } catch (ex: any) {
+    result.error = new ErrorResult();
+    result.error.status = -1;
+    result.error.title = ex.message;
+    console.error(ex);
+  }
+
+  return result;
+}
+
+export async function removeCar(car: Car) {
+  const uri = `api/cars/${car._id}`;
+  const result = new CarsResult();
+  try {
+    const response = await fetch(uri, {
+      method: 'DELETE',
+      headers: { 'Accept': 'application/json' }
+    });
+    if (response.ok) {
+      car.isActive = false;
       result.cars = [car];
     } else {
       const err = await response.json();      
@@ -90,6 +157,8 @@ export class CarFilterArgs {
   hasHeatedSeats: boolean = false;
   hasPowerWindows: boolean = false;
   color: string = '';
+
+  static default = new CarFilterArgs();
 }
 
 export class CarsResult {

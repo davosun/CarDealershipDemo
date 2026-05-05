@@ -31,7 +31,7 @@ function CarsFilterPanel({ applyFilters, loading }) {
     setLowMileageThresholdFilter(null);
     setStrictSearchMode(null);
 
-    applyFilters(new CarFilterArgs());
+    applyFilters(CarFilterArgs.default);
   }
 
   useEffect(() => {
@@ -52,6 +52,17 @@ function CarsFilterPanel({ applyFilters, loading }) {
     }
 
     prevLowMileageThreshold.current = debouncedLowMileageThreshold;
+
+    if (!colorFilter
+      && !fourWheelDriveFilter
+      && !lowMilesFilter
+      && !navigationFilter
+      && !powerWindowsFilter
+      && !sunroofFilter
+      && !heatedSeatsFilter
+    ) {
+      applyFilters(CarFilterArgs.default);
+    }
 
     const args = new CarFilterArgs();
     args.strictSearch = strictSearchMode;
@@ -125,9 +136,14 @@ function CarsFilterPanel({ applyFilters, loading }) {
                   <Form.Check type="checkbox" label="Match all criteria" onClick={e => setStrictSearchMode(e.target.checked)} />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Button variant="secondary" type="reset">Clear</Button>
+                  <Button variant="secondary" type="reset">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
+                      <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                    </svg>{' '}
+                    Clear
+                  </Button>
                 </Form.Group>
-                <Spinner animation="border" variant="info" style={{ visibility: loading ? 'visible' : 'hidden' }} />
+                <Spinner animation="border" variant="primary" style={{ visibility: loading ? 'visible' : 'hidden' }} />
               </Col>
             </Row>
           </Form>
