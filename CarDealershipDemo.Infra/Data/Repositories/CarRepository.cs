@@ -51,5 +51,92 @@ namespace CarDealershipDemo.Infra.Data.Repositories
             query = query.SortAndPaginate(args.Page, args.PageSize);
             return query;
         }
+
+        public IQueryable<Car> QueryCar(string carId)
+        {
+            var query = _db.Cars.Where(c => c.Id == Guid.Parse(carId));
+            return query;
+        } 
+
+        public async Task<Car> AddCarAsync(
+            string make,
+            int year,
+            int miles,
+            decimal price,
+            string color,
+            bool isFourWheelDrive,
+            bool hasPowerWindows,
+            bool hasSunroof,
+            bool hasNavigation,
+            bool hasHeatedSeats, 
+            CancellationToken cancellationToken = default)
+        {
+            var car = CarFactory.Create(
+                make,
+                year,
+                Enum.Parse<Color>(color),
+                miles,
+                price,
+                isFourWheelDrive ? Drivetrain.FourWheel : Drivetrain.TwoWheel,
+                hasSunroof,
+                hasPowerWindows,
+                hasNavigation,
+                hasHeatedSeats);
+            await _db.Cars.AddAsync(car, cancellationToken);
+            await _db.SaveChangesAsync(cancellationToken);
+            return car;
+        }
+
+        public async Task<Car> UpdateCarAsync(
+            string carId,
+            string make,
+            int year,
+            int miles,
+            decimal price,
+            string color,
+            bool isFourWheelDrive,
+            bool hasPowerWindows,
+            bool hasSunroof,
+            bool hasNavigation,
+            bool hasHeatedSeats,
+            CancellationToken cancellationToken = default)
+        {
+            var car = new Car
+            {
+                Id = Guid.Parse(carId),
+                IsActive = true,
+                Make = string.Empty
+            };
+            _db.Cars.Attach(car);
+
+            car.Make = make;
+            car.Year = year;
+            car.Miles = miles;
+            car.Price = price;
+            car.Color = Enum.Parse<Color>(color);
+            car.Drivetrain = isFourWheelDrive ? Drivetrain.FourWheel : Drivetrain.TwoWheel;
+            car.HasPowerWindows = hasPowerWindows;
+            car.HasSunroof = hasSunroof;
+            car.HasNavigation = hasNavigation;
+            car.HasHeatedSeats = hasHeatedSeats;
+            await _db.SaveChangesAsync(cancellationToken);
+            return car; 
+        }
+
+        public async ValueTask<int> SoftRemoveCarAsync(string id, CancellationToken cancellationToken = default)
+        {
+            var car = new Car
+            {
+                Id = Guid.Parse(id),
+                Make = string.Empty,
+                IsActive = true
+            };
+            _db.Cars.Attach(car);
+
+            car.IsActive = false;
+            
+            var affectedCount = await _db.SaveChangesAsync(cancellationToken);
+            return affectedCount;
+        }
     }
 }

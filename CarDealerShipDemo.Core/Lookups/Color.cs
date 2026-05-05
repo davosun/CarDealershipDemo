@@ -9,5 +9,6 @@
         Green = 0x00FF00,
         Blue = 0x0000FF,
         White = 0xFFFFFF,
+        Yellow = 0xFFFF00
     }
 }

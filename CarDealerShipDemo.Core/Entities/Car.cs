@@ -1,5 +1,4 @@
 ﻿using CarDealershipDemo.Core.Lookups;
-using System.Diagnostics.CodeAnalysis;
 
 namespace CarDealershipDemo.Core.Entities
 {
