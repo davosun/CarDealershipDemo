@@ -80,13 +80,6 @@ export default function EditCarModal({ show, onHide, handleUpdate, car, index })
       <Modal.Body>
         <Form noValidate validated={validated} onSubmit={handleSubmit} ref={formRef}>
           <Form.Text muted className="mb-3">All fields required</Form.Text>
-          <Form.Group as={Row} className="mb-3" controlId="carMake">
-            <Form.Label column sm={4}>Make</Form.Label>
-            <Col sm={8}>
-              <Form.Control type="text" placeholder="Enter the make..." required maxLength={50} defaultValue={make} onChange={e => setMake(e.target.value)} />
-              <Form.Control.Feedback type="invalid">Car make is required and has a max length of 50 characters</Form.Control.Feedback>
-            </Col>
-          </Form.Group>
           <Form.Group as={Row} className="mb-3" controlId="carYear">
             <Form.Label column sm={4}>Year</Form.Label>
             <Col sm={8}>
@@ -98,11 +91,11 @@ export default function EditCarModal({ show, onHide, handleUpdate, car, index })
               </Form.Select>
             </Col>
           </Form.Group>
-          <Form.Group as={Row} className="mb-3" controlId="carMileage">
-            <Form.Label column sm={4}>Miles</Form.Label>
+          <Form.Group as={Row} className="mb-3" controlId="carMake">
+            <Form.Label column sm={4}>Make</Form.Label>
             <Col sm={8}>
-              <Form.Control type="number" placeholder="Enter the mileage (to nearest whole mile)..." required min={0} max={999999} defaultValue={miles} onChange={e => setMiles(e.target.value)} />
-              <Form.Control.Feedback type="invalid">Mileage is required and must be between 0 and 999999 (inclusive)</Form.Control.Feedback>
+              <Form.Control type="text" placeholder="Enter the make..." required maxLength={50} defaultValue={make} onChange={e => setMake(e.target.value)} />
+              <Form.Control.Feedback type="invalid">Car make is required and has a max length of 50 characters</Form.Control.Feedback>
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3" controlId="carColor">
@@ -121,21 +114,30 @@ export default function EditCarModal({ show, onHide, handleUpdate, car, index })
               </Form.Select>
             </Col>
           </Form.Group>
+          <Form.Group as={Row} className="mb-3" controlId="carPrice">
+            <Form.Label column sm={4}>Price</Form.Label>
+            <Col sm={8}>
+              <InputGroup>
+                <InputGroup.Text>$</InputGroup.Text>
+                <Form.Control type="number" required min={0} max={999999999} defaultValue={price} placeholder="Enter the price (to nearest whole dollar)..." onChange={e => setPrice(e.target.value)} />
+                <InputGroup.Text>.00</InputGroup.Text>
+                <Form.Control.Feedback type="invalid">Price is required and must be between 0 and 999999999 (inclusive)</Form.Control.Feedback>
+              </InputGroup>
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row} className="mb-3" controlId="carMileage">
+            <Form.Label column sm={4}>Miles</Form.Label>
+            <Col sm={8}>
+              <Form.Control type="number" placeholder="Enter the mileage (to nearest whole mile)..." required min={0} max={999999} defaultValue={miles} onChange={e => setMiles(e.target.value)} />
+              <Form.Control.Feedback type="invalid">Mileage is required and must be between 0 and 999999 (inclusive)</Form.Control.Feedback>
+            </Col>
+          </Form.Group>
           <fieldset>
             <Form.Group as={Row} className="mb-3">
               <Form.Label column sm={4}>Drivetrain</Form.Label>
               <Col sm={8}>
                 <Form.Check type="radio" inline label="2WD" name="drivetrainOption" id="drivetrain-2wd" required defaultChecked={!isFourWheelDrive} onClick={() => setIsFourWheelDrive(false)} />
                 <Form.Check type="radio" inline label="4WD" name="drivetrainOption" id="drivetrain-4wd" required defaultChecked={isFourWheelDrive} onClick={() => setIsFourWheelDrive(true)} />
-              </Col>
-            </Form.Group>
-          </fieldset>
-          <fieldset>
-            <Form.Group as={Row} className="mb-3">
-              <Form.Label column sm={4}>Power Windows</Form.Label>
-              <Col sm={8}>
-                <Form.Check type="radio" inline label="No" name="powerWindowsOption" id="powerWindows-no" required defaultChecked={!hasPowerWindows} onClick={() => setHasPowerWindows(false)} />
-                <Form.Check type="radio" inline label="Yes" name="powerWindowsOption" id="powerWindows-yes" required defaultChecked={hasPowerWindows} onClick={() => setHasPowerWindows(true)} />
               </Col>
             </Form.Group>
           </fieldset>
@@ -166,17 +168,15 @@ export default function EditCarModal({ show, onHide, handleUpdate, car, index })
               </Col>
             </Form.Group>
           </fieldset>
-          <Form.Group as={Row} className="mb-3" controlId="carPrice">
-            <Form.Label column sm={4}>Price</Form.Label>
-            <Col sm={8}>
-              <InputGroup>
-                <InputGroup.Text>$</InputGroup.Text>
-                <Form.Control type="number" required min={0} max={999999999} defaultValue={price} placeholder="Enter the price (to nearest whole dollar)..." onChange={e => setPrice(e.target.value)} />
-                <InputGroup.Text>.00</InputGroup.Text>
-                <Form.Control.Feedback type="invalid">Price is required and must be between 0 and 999999999 (inclusive)</Form.Control.Feedback>
-              </InputGroup>
-            </Col>
-          </Form.Group>
+          <fieldset>
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={4}>Power Windows</Form.Label>
+              <Col sm={8}>
+                <Form.Check type="radio" inline label="No" name="powerWindowsOption" id="powerWindows-no" required defaultChecked={!hasPowerWindows} onClick={() => setHasPowerWindows(false)} />
+                <Form.Check type="radio" inline label="Yes" name="powerWindowsOption" id="powerWindows-yes" required defaultChecked={hasPowerWindows} onClick={() => setHasPowerWindows(true)} />
+              </Col>
+            </Form.Group>
+          </fieldset>
         </Form>
         {error 
           ? (
