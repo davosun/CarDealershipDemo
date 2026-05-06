@@ -113,22 +113,22 @@ function CarsFilterPanel({ applyFilters, loading }) {
                 <Form.Group className="mb-3" controlId="lowMileageOption">
                   <Form.Check type="checkbox" label="Low Mileage" onClick={e => setLowMilesFilter(e.target.checked)} />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="fourWheelDriveOption">
-                  <Form.Check type="checkbox" label="4WD" onClick={e => setFourWheelDriveFilter(e.target.checked)} />
+                <Form.Group className="mb-3" controlId="navigationOption">
+                  <Form.Check type="checkbox" label="Navigation" onClick={e => setNavigationFilter(e.target.checked)} />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="powerWindowsOption">
-                  <Form.Check type="checkbox" label="Power Windows" onClick={e => setPowerWindowsFilter(e.target.checked)} />
+                <Form.Group className="mb-3" controlId="sunroofOption">
+                  <Form.Check type="checkbox" label="Sunroof" onClick={e => setSunroofFilter(e.target.checked)} />
                 </Form.Group>
               </Col>
               <Col md={3}>
-                <Form.Group className="mb-3" controlId="sunroofOption">
-                  <Form.Check type="checkbox" label="Sunroof" onClick={e => setSunroofFilter(e.target.checked)} />
+                <Form.Group className="mb-3" controlId="fourWheelDriveOption">
+                  <Form.Check type="checkbox" label="4WD" onClick={e => setFourWheelDriveFilter(e.target.checked)} />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="heatedSeatsOption">
                   <Form.Check type="checkbox" label="Heated Seats" onClick={e => setHeatedSeatsFilter(e.target.checked)} />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="navigationOption">
-                  <Form.Check type="checkbox" label="Navigation" onClick={e => setNavigationFilter(e.target.checked)} />
+                <Form.Group className="mb-3" controlId="powerWindowsOption">
+                  <Form.Check type="checkbox" label="Power Windows" onClick={e => setPowerWindowsFilter(e.target.checked)} />
                 </Form.Group>
               </Col>
               <Col>
