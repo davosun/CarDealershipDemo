@@ -71,16 +71,16 @@ function CarsTable({ cars, onCarUpdated, onCarRemoved }) {
       <Table striped bordered hover responsive>
         <thead>
           <tr>
-            <th>Make</th>
             <th>Year</th>
+            <th>Make</th>
             <th>Color</th>
-            <th>Miles</th>
             <th>Price</th>
+            <th>Miles</th>
             <th>Drivetrain</th>
-            <th>Sunroof</th>
-            <th>Power Windows</th>
             <th>Navigation</th>
             <th>Heated Seates</th>
+            <th>Sunroof</th>
+            <th>Power Windows</th>
             <th></th>
           </tr>
         </thead>
@@ -88,30 +88,30 @@ function CarsTable({ cars, onCarUpdated, onCarRemoved }) {
           {cars?.map((car, index) => {
             return (
               <tr key={index}>
-                <td>{car.make}</td>
                 <td>{car.year}</td>
+                <td>{car.make}</td>
                 <td>
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" className="mb-1">
                     <rect width="100%" height="100%" fill={car.colorHexCode} />
                   </svg>{' '}
                   {car.color}
                 </td>
-                <td>{car.displayMiles}</td>
                 <td>{car.displayPrice}</td>
+                <td>{car.displayMiles}</td>
                 <td>{car.isFourWheelDrive ? '4WD' : '2WD'}</td>
-                <td>{car.hasSunroof
-                  ? <YesIcon />
-                  : <NoIcon />}
-                </td>
-                <td>{car.hasPowerWindows
-                  ? <YesIcon />
-                  : <NoIcon />}
-                </td>
                 <td>{car.hasNavigation
                   ? <YesIcon />
                   : <NoIcon />}
                 </td>
                 <td>{car.hasHeatedSeats
+                  ? <YesIcon />
+                  : <NoIcon />}
+                </td>
+                <td>{car.hasSunroof
+                  ? <YesIcon />
+                  : <NoIcon />}
+                </td>
+                <td>{car.hasPowerWindows
                   ? <YesIcon />
                   : <NoIcon />}
                 </td>
