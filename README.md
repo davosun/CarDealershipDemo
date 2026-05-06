@@ -15,6 +15,7 @@ A full-stack web application demonstrating modern enterprise application pattern
 
 ### 🌐 Live Demo
 
+**Application:**
 https://cardealershipdemo.azurewebsites.net
 
 > ⚠️ Note: The live demo uses a cost-optimized Azure SQL tier that may pause after inactivity. 
@@ -22,11 +23,17 @@ https://cardealershipdemo.azurewebsites.net
 
 ---
 
+### 🎥 Demo Video
+
+https://github.com/user-attachments/assets/a74f8742-1c5c-4a54-bb55-dc56d4f7c732
+
+---
+
 ### 🔧 Key Highlights
 
 - Modernized legacy project from .NET 5 → .NET 10
 - Migrated frontend from Create React App → Vite for improved performance and maintainability
-- Implemented full CRUD workflows for vehicle inventory 
+- Implemented full CRUD workflows for vehicle inventory management
 - Designed RESTful APIs for real-world business workflows
 - Implemented dynamic filtering with real-time API queries (feature-based, mileage thresholds, strict matching)
 - Implemented frontend and backend validation to enforce data integrity
