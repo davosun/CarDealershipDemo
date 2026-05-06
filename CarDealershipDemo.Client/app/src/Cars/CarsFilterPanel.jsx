@@ -30,7 +30,7 @@ function CarsFilterPanel({ applyFilters, loading }) {
     setHeatedSeatsFilter(null);
     setLowMileageThresholdFilter(null);
     setStrictSearchMode(null);
-
+    prevLowMileageThreshold.current = null;
     applyFilters(CarFilterArgs.default);
   }
 
