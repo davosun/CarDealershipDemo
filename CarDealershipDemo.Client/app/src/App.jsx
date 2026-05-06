@@ -69,7 +69,7 @@ function App() {
     <>
     <div className="App container">
       <h1>
-        Car Dealership <Badge bg="warning">Demo</Badge>
+        Car Dealership <Badge bg="warning" pill text="secondary">Demo</Badge>
       </h1>
       {cars === null && error === null
         ? <Spinner animation="border" variant="primary" />
