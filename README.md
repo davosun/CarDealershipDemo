@@ -116,4 +116,4 @@ https://github.com/user-attachments/assets/a74f8742-1c5c-4a54-bb55-dc56d4f7c732
 
 ### 🧾 Project Background
 
-This project originated from a real-world take-home assignment, which included requirements for dynamic filtering and interactive data queries. It has since been expanded and modernized to incorporate a relational data layer, updated frontend tooling, and cloud deployment on Azure.
+This project originated from a real-world consulting-style take-home assignment where I selected the car dealership domain with a .NET Web API and React frontend. I chose this combination because it aligned with my background while providing clear, business-oriented filtering requirements. It has since been expanded and modernized with Azure SQL, EF Core, full CRUD workflows, updated frontend tooling, and cloud deployment on Azure.
