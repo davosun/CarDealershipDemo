@@ -18,9 +18,6 @@ A full-stack web application demonstrating modern enterprise application pattern
 **Application:**
 https://cardealershipdemo.azurewebsites.net
 
-> ⚠️ Note: The live demo uses a cost-optimized Azure SQL tier that may pause after inactivity. 
-> The first request after idle periods can take up to ~60 seconds to respond due to database warm-up in a serverless/cost-optimized configuration.
-
 ---
 
 ### 🎥 Demo Video
